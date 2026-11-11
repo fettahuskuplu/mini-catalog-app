@@ -10,15 +10,38 @@ class SpecBox extends StatelessWidget {
     required this.value,
   });
 
+  String _formatLabel(String raw) {
+    switch (raw.toLowerCase()) {
+      case 'chip':
+        return 'İşlemci';
+      case 'material':
+        return 'Gövde';
+      case 'camera':
+        return 'Kamera';
+      case 'display':
+        return 'Ekran';
+      case 'battery':
+        return 'Pil';
+      case 'storage':
+        return 'Hafıza';
+      case 'audio':
+        return 'Ses';
+      case 'sensors':
+        return 'Sensör';
+      default:
+        return raw.toUpperCase();
+    }
+  }
+
   @override
   Widget build(BuildContext context) {
     return Container(
       padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 10),
       decoration: BoxDecoration(
-        color: const Color(0xFFFAFAFC),
+        color: const Color(0xFFF8FAFC),
         borderRadius: BorderRadius.circular(12),
         border: Border.all(
-          color: const Color(0xFFE5E5EA),
+          color: const Color(0xFFE2E8F0),
           width: 1,
         ),
       ),
@@ -26,12 +49,12 @@ class SpecBox extends StatelessWidget {
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
           Text(
-            label.toUpperCase(),
+            _formatLabel(label),
             style: const TextStyle(
               fontSize: 10,
               fontWeight: FontWeight.w600,
-              color: Color(0xFF86868B),
-              letterSpacing: 0.4,
+              color: Color(0xFF64748B),
+              letterSpacing: 0.3,
             ),
           ),
           const SizedBox(height: 4),
@@ -42,7 +65,7 @@ class SpecBox extends StatelessWidget {
             style: const TextStyle(
               fontSize: 12,
               fontWeight: FontWeight.w700,
-              color: Color(0xFF1D1D1F),
+              color: Color(0xFF1E293B),
             ),
           ),
         ],

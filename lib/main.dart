@@ -50,10 +50,10 @@ class _MiniCatalogAppState extends State<MiniCatalogApp> {
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
-      title: 'Mini Catalog',
+      title: 'Mini Katalog',
       debugShowCheckedModeBanner: false,
       theme: ThemeData(
-        colorScheme: ColorScheme.fromSeed(seedColor: const Color(0xFF0066CC)),
+        colorScheme: ColorScheme.fromSeed(seedColor: const Color(0xFF2563EB)),
         scaffoldBackgroundColor: Colors.white,
         useMaterial3: true,
       ),
@@ -63,6 +63,7 @@ class _MiniCatalogAppState extends State<MiniCatalogApp> {
               cartItems: _cartItems,
               favoriteIds: _favoriteIds,
               onToggleFavorite: _toggleFavorite,
+              onAddToCart: _addToCart,
             ),
         '/detail': (context) => DetailScreen(
               onAddToCart: _addToCart,

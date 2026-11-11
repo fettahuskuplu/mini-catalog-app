@@ -56,17 +56,17 @@ class _CartScreenState extends State<CartScreen> {
           borderRadius: BorderRadius.circular(16),
         ),
         title: const Text(
-          'Order Confirmed',
+          'Siparişiniz Alındı',
           style: TextStyle(
             fontWeight: FontWeight.w700,
-            color: Color(0xFF1D1D1F),
+            color: Color(0xFF1E293B),
           ),
         ),
         content: Text(
-          'Your order of $formattedTotal has been placed successfully.',
+          '$formattedTotal tutarındaki siparişiniz başarıyla oluşturuldu.',
           style: const TextStyle(
             fontSize: 14,
-            color: Color(0xFF515154),
+            color: Color(0xFF475569),
           ),
         ),
         actions: [
@@ -78,10 +78,10 @@ class _CartScreenState extends State<CartScreen> {
               });
             },
             child: const Text(
-              'OK',
+              'Tamam',
               style: TextStyle(
                 fontWeight: FontWeight.w700,
-                color: Color(0xFF0066CC),
+                color: Color(0xFF2563EB),
               ),
             ),
           ),
@@ -107,14 +107,14 @@ class _CartScreenState extends State<CartScreen> {
                 icon: const Icon(
                   Icons.arrow_back_ios_new,
                   size: 16,
-                  color: Color(0xFF1D1D1F),
+                  color: Color(0xFF1E293B),
                 ),
                 label: const Text(
-                  'Cart',
+                  'Sepetim',
                   style: TextStyle(
                     fontSize: 16,
                     fontWeight: FontWeight.w700,
-                    color: Color(0xFF1D1D1F),
+                    color: Color(0xFF1E293B),
                   ),
                 ),
               ),
@@ -126,25 +126,25 @@ class _CartScreenState extends State<CartScreen> {
                         mainAxisSize: MainAxisSize.min,
                         children: [
                           Icon(
-                            Icons.shopping_cart_outlined,
+                            Icons.shopping_bag_outlined,
                             size: 64,
                             color: Colors.grey.withValues(alpha: 0.45),
                           ),
                           const SizedBox(height: 14),
                           const Text(
-                            'Your cart is empty',
+                            'Sepetiniz henüz boş',
                             style: TextStyle(
                               fontSize: 16,
                               fontWeight: FontWeight.w700,
-                              color: Color(0xFF1D1D1F),
+                              color: Color(0xFF1E293B),
                             ),
                           ),
                           const SizedBox(height: 4),
                           const Text(
-                            'Add items to start shopping',
+                            'Alışverişe başlamak için ürün ekleyin',
                             style: TextStyle(
                               fontSize: 13,
-                              color: Color(0xFF86868B),
+                              color: Color(0xFF64748B),
                             ),
                           ),
                         ],
@@ -160,65 +160,75 @@ class _CartScreenState extends State<CartScreen> {
                           const SizedBox(height: 14),
                       itemBuilder: (context, index) {
                         final item = widget.cartItems[index];
-                        return Row(
-                          children: [
-                            Container(
-                              width: 64,
-                              height: 64,
-                              padding: const EdgeInsets.all(8),
-                              decoration: BoxDecoration(
-                                color: const Color(0xFFF5F5F7),
-                                borderRadius: BorderRadius.circular(12),
-                              ),
-                              child: Image.asset(
-                                item.localImagePath,
-                                fit: BoxFit.contain,
-                              ),
+                        return Container(
+                          padding: const EdgeInsets.all(12),
+                          decoration: BoxDecoration(
+                            color: const Color(0xFFF8FAFC),
+                            borderRadius: BorderRadius.circular(14),
+                            border: Border.all(
+                              color: const Color(0xFFF1F5F9),
                             ),
-                            const SizedBox(width: 14),
-                            Expanded(
-                              child: Column(
-                                crossAxisAlignment: CrossAxisAlignment.start,
-                                children: [
-                                  Text(
-                                    item.name,
-                                    style: const TextStyle(
-                                      fontSize: 14,
-                                      fontWeight: FontWeight.w700,
-                                      color: Color(0xFF1D1D1F),
-                                    ),
-                                  ),
-                                  const SizedBox(height: 2),
-                                  Text(
-                                    item.tagline,
-                                    maxLines: 1,
-                                    overflow: TextOverflow.ellipsis,
-                                    style: const TextStyle(
-                                      fontSize: 12,
-                                      color: Color(0xFF86868B),
-                                    ),
-                                  ),
-                                  const SizedBox(height: 4),
-                                  Text(
-                                    item.price,
-                                    style: const TextStyle(
-                                      fontSize: 13,
-                                      fontWeight: FontWeight.w700,
-                                      color: Color(0xFF0066CC),
-                                    ),
-                                  ),
-                                ],
+                          ),
+                          child: Row(
+                            children: [
+                              Container(
+                                width: 64,
+                                height: 64,
+                                padding: const EdgeInsets.all(8),
+                                decoration: BoxDecoration(
+                                  color: Colors.white,
+                                  borderRadius: BorderRadius.circular(10),
+                                ),
+                                child: Image.asset(
+                                  item.localImagePath,
+                                  fit: BoxFit.contain,
+                                ),
                               ),
-                            ),
-                            IconButton(
-                              onPressed: () => _handleRemove(item),
-                              icon: const Icon(
-                                Icons.remove_circle_outline,
-                                color: Color(0xFF86868B),
-                                size: 22,
+                              const SizedBox(width: 14),
+                              Expanded(
+                                child: Column(
+                                  crossAxisAlignment: CrossAxisAlignment.start,
+                                  children: [
+                                    Text(
+                                      item.name,
+                                      style: const TextStyle(
+                                        fontSize: 14,
+                                        fontWeight: FontWeight.w700,
+                                        color: Color(0xFF1E293B),
+                                      ),
+                                    ),
+                                    const SizedBox(height: 2),
+                                    Text(
+                                      item.tagline,
+                                      maxLines: 1,
+                                      overflow: TextOverflow.ellipsis,
+                                      style: const TextStyle(
+                                        fontSize: 12,
+                                        color: Color(0xFF64748B),
+                                      ),
+                                    ),
+                                    const SizedBox(height: 4),
+                                    Text(
+                                      item.price,
+                                      style: const TextStyle(
+                                        fontSize: 13,
+                                        fontWeight: FontWeight.w700,
+                                        color: Color(0xFF2563EB),
+                                      ),
+                                    ),
+                                  ],
+                                ),
                               ),
-                            ),
-                          ],
+                              IconButton(
+                                onPressed: () => _handleRemove(item),
+                                icon: const Icon(
+                                  Icons.remove_circle_outline,
+                                  color: Color(0xFFEF4444),
+                                  size: 22,
+                                ),
+                              ),
+                            ],
+                          ),
                         );
                       },
                     ),
@@ -232,19 +242,19 @@ class _CartScreenState extends State<CartScreen> {
                       mainAxisAlignment: MainAxisAlignment.spaceBetween,
                       children: [
                         Text(
-                          'Total (${widget.cartItems.length} items)',
+                          'Toplam (${widget.cartItems.length} ürün)',
                           style: const TextStyle(
                             fontSize: 14,
                             fontWeight: FontWeight.w600,
-                            color: Color(0xFF86868B),
+                            color: Color(0xFF64748B),
                           ),
                         ),
                         Text(
                           _formatPrice(_totalAmount),
                           style: const TextStyle(
-                            fontSize: 18,
+                            fontSize: 20,
                             fontWeight: FontWeight.w800,
-                            color: Color(0xFF1D1D1F),
+                            color: Color(0xFF1E293B),
                           ),
                         ),
                       ],
@@ -258,23 +268,24 @@ class _CartScreenState extends State<CartScreen> {
                       vertical: 10,
                     ),
                     decoration: BoxDecoration(
-                      color: const Color(0xFFF5F5F7),
+                      color: const Color(0xFFF1F5F9),
                       borderRadius: BorderRadius.circular(10),
                     ),
                     child: const Row(
                       children: [
                         Icon(
-                          Icons.info_outline,
+                          Icons.local_shipping_outlined,
                           size: 16,
-                          color: Color(0xFF86868B),
+                          color: Color(0xFF2563EB),
                         ),
                         SizedBox(width: 8),
                         Expanded(
                           child: Text(
-                            'Free shipping on all orders. Instant checkout simulation.',
+                            'Tüm siparişlerde kargo ücretsizdir.',
                             style: TextStyle(
-                              fontSize: 11,
-                              color: Color(0xFF86868B),
+                              fontSize: 12,
+                              fontWeight: FontWeight.w500,
+                              color: Color(0xFF475569),
                             ),
                           ),
                         ),
@@ -288,8 +299,8 @@ class _CartScreenState extends State<CartScreen> {
                     child: ElevatedButton(
                       onPressed: isEmpty ? null : _handleCheckout,
                       style: ElevatedButton.styleFrom(
-                        backgroundColor: const Color(0xFF1D1D1F),
-                        disabledBackgroundColor: const Color(0xFF1D1D1F),
+                        backgroundColor: const Color(0xFF2563EB),
+                        disabledBackgroundColor: const Color(0xFF94A3B8),
                         foregroundColor: Colors.white,
                         disabledForegroundColor: Colors.white,
                         shape: RoundedRectangleBorder(
@@ -298,10 +309,10 @@ class _CartScreenState extends State<CartScreen> {
                         elevation: 0,
                       ),
                       child: const Text(
-                        'Checkout',
+                        'Siparişi Tamamla',
                         style: TextStyle(
                           fontSize: 15,
-                          fontWeight: FontWeight.w600,
+                          fontWeight: FontWeight.w700,
                         ),
                       ),
                     ),

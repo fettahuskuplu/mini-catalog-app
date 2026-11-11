@@ -6,6 +6,7 @@ class ProductCard extends StatelessWidget {
   final bool isFavorite;
   final VoidCallback onTap;
   final VoidCallback onFavoriteToggle;
+  final VoidCallback onAddToCart;
 
   const ProductCard({
     super.key,
@@ -13,6 +14,7 @@ class ProductCard extends StatelessWidget {
     required this.isFavorite,
     required this.onTap,
     required this.onFavoriteToggle,
+    required this.onAddToCart,
   });
 
   @override
@@ -23,6 +25,10 @@ class ProductCard extends StatelessWidget {
         decoration: BoxDecoration(
           color: Colors.white,
           borderRadius: BorderRadius.circular(16),
+          border: Border.all(
+            color: const Color(0xFFF1F5F9),
+            width: 1,
+          ),
           boxShadow: [
             BoxShadow(
               color: Colors.black.withValues(alpha: 0.04),
@@ -40,9 +46,9 @@ class ProductCard extends StatelessWidget {
                   Container(
                     width: double.infinity,
                     padding: const EdgeInsets.all(14),
-                    decoration: BoxDecoration(
-                      color: const Color(0xFFF5F5F7),
-                      borderRadius: BorderRadius.circular(16),
+                    decoration: const BoxDecoration(
+                      color: Color(0xFFF8FAFC),
+                      borderRadius: BorderRadius.vertical(top: Radius.circular(16)),
                     ),
                     child: Hero(
                       tag: 'product_image_${product.id}',
@@ -53,7 +59,7 @@ class ProductCard extends StatelessWidget {
                             const Icon(
                           Icons.devices,
                           size: 48,
-                          color: Colors.grey,
+                          color: Color(0xFF94A3B8),
                         ),
                       ),
                     ),
@@ -66,15 +72,21 @@ class ProductCard extends StatelessWidget {
                       child: Container(
                         padding: const EdgeInsets.all(6),
                         decoration: BoxDecoration(
-                          color: Colors.white.withValues(alpha: 0.85),
+                          color: Colors.white.withValues(alpha: 0.9),
                           shape: BoxShape.circle,
+                          boxShadow: [
+                            BoxShadow(
+                              color: Colors.black.withValues(alpha: 0.06),
+                              blurRadius: 4,
+                            ),
+                          ],
                         ),
                         child: Icon(
                           isFavorite ? Icons.favorite : Icons.favorite_border,
                           size: 16,
                           color: isFavorite
-                              ? const Color(0xFFFF3B30)
-                              : const Color(0xFF86868B),
+                              ? const Color(0xFFEF4444)
+                              : const Color(0xFF64748B),
                         ),
                       ),
                     ),
@@ -83,7 +95,7 @@ class ProductCard extends StatelessWidget {
               ),
             ),
             Padding(
-              padding: const EdgeInsets.fromLTRB(8, 10, 8, 8),
+              padding: const EdgeInsets.fromLTRB(10, 10, 10, 10),
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
@@ -94,7 +106,7 @@ class ProductCard extends StatelessWidget {
                     style: const TextStyle(
                       fontSize: 14,
                       fontWeight: FontWeight.w700,
-                      color: Color(0xFF1D1D1F),
+                      color: Color(0xFF1E293B),
                     ),
                   ),
                   const SizedBox(height: 2),
@@ -104,17 +116,37 @@ class ProductCard extends StatelessWidget {
                     overflow: TextOverflow.ellipsis,
                     style: const TextStyle(
                       fontSize: 11,
-                      color: Color(0xFF86868B),
+                      color: Color(0xFF64748B),
                     ),
                   ),
-                  const SizedBox(height: 6),
-                  Text(
-                    product.price,
-                    style: const TextStyle(
-                      fontSize: 14,
-                      fontWeight: FontWeight.w700,
-                      color: Color(0xFF0066CC),
-                    ),
+                  const SizedBox(height: 8),
+                  Row(
+                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                    children: [
+                      Text(
+                        product.price,
+                        style: const TextStyle(
+                          fontSize: 15,
+                          fontWeight: FontWeight.w800,
+                          color: Color(0xFF2563EB),
+                        ),
+                      ),
+                      GestureDetector(
+                        onTap: onAddToCart,
+                        child: Container(
+                          padding: const EdgeInsets.all(6),
+                          decoration: BoxDecoration(
+                            color: const Color(0xFF2563EB),
+                            borderRadius: BorderRadius.circular(8),
+                          ),
+                          child: const Icon(
+                            Icons.add_shopping_cart_rounded,
+                            size: 16,
+                            color: Colors.white,
+                          ),
+                        ),
+                      ),
+                    ],
                   ),
                 ],
               ),

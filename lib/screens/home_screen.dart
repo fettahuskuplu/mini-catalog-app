@@ -7,12 +7,14 @@ class HomeScreen extends StatefulWidget {
   final List<Product> cartItems;
   final Set<int> favoriteIds;
   final ValueChanged<int> onToggleFavorite;
+  final ValueChanged<Product> onAddToCart;
 
   const HomeScreen({
     super.key,
     required this.cartItems,
     required this.favoriteIds,
     required this.onToggleFavorite,
+    required this.onAddToCart,
   });
 
   @override
@@ -24,18 +26,18 @@ class _HomeScreenState extends State<HomeScreen> {
   final TextEditingController _searchController = TextEditingController();
 
   final List<String> _categories = [
-    'All',
-    'Favorites',
+    'Tümü',
+    'Favoriler',
     'iPhone',
     'Mac',
     'iPad',
-    'Watch',
-    'Audio',
+    'Saat',
+    'Ses & Aksesuar',
   ];
 
   List<Product> _allProducts = [];
   List<Product> _filteredProducts = [];
-  String _selectedCategory = 'All';
+  String _selectedCategory = 'Tümü';
   bool _isLoading = true;
 
   @override
@@ -64,8 +66,10 @@ class _HomeScreenState extends State<HomeScreen> {
             product.tagline.toLowerCase().contains(query);
 
         final matchesCategory = switch (_selectedCategory) {
-          'All' => true,
-          'Favorites' => widget.favoriteIds.contains(product.id),
+          'Tümü' => true,
+          'Favoriler' => widget.favoriteIds.contains(product.id),
+          'Saat' => product.category == 'Watch',
+          'Ses & Aksesuar' => product.category == 'Audio',
           _ => product.category == _selectedCategory,
         };
 
@@ -101,20 +105,20 @@ class _HomeScreenState extends State<HomeScreen> {
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
                       Text(
-                        'Discover',
+                        'Keşfet',
                         style: TextStyle(
                           fontSize: 30,
                           fontWeight: FontWeight.w800,
-                          color: Color(0xFF1D1D1F),
+                          color: Color(0xFF1E293B),
                           letterSpacing: -0.5,
                         ),
                       ),
                       SizedBox(height: 2),
                       Text(
-                        'Find your perfect device',
+                        'Aradığınız cihazı keşfedin',
                         style: TextStyle(
                           fontSize: 14,
-                          color: Color(0xFF86868B),
+                          color: Color(0xFF64748B),
                         ),
                       ),
                     ],
@@ -131,7 +135,7 @@ class _HomeScreenState extends State<HomeScreen> {
                         icon: const Icon(
                           Icons.shopping_bag_outlined,
                           size: 26,
-                          color: Color(0xFF1D1D1F),
+                          color: Color(0xFF1E293B),
                         ),
                       ),
                       if (cartCount > 0)
@@ -141,7 +145,7 @@ class _HomeScreenState extends State<HomeScreen> {
                           child: Container(
                             padding: const EdgeInsets.all(4),
                             decoration: const BoxDecoration(
-                              color: Color(0xFF0066CC),
+                              color: Color(0xFF2563EB),
                               shape: BoxShape.circle,
                             ),
                             constraints: const BoxConstraints(
@@ -166,28 +170,28 @@ class _HomeScreenState extends State<HomeScreen> {
               const SizedBox(height: 16),
               Container(
                 decoration: BoxDecoration(
-                  color: const Color(0xFFF5F5F7),
+                  color: const Color(0xFFF1F5F9),
                   borderRadius: BorderRadius.circular(12),
                 ),
                 child: TextField(
                   controller: _searchController,
                   onChanged: (_) => _applyFilters(),
                   decoration: InputDecoration(
-                    hintText: 'Search products',
+                    hintText: 'Ürünlerde ara...',
                     hintStyle: const TextStyle(
-                      color: Color(0xFF86868B),
+                      color: Color(0xFF94A3B8),
                       fontSize: 14,
                     ),
                     prefixIcon: const Icon(
                       Icons.search,
-                      color: Color(0xFF86868B),
+                      color: Color(0xFF94A3B8),
                       size: 20,
                     ),
                     suffixIcon: _searchController.text.isNotEmpty
                         ? IconButton(
                             icon: const Icon(
                               Icons.clear,
-                              color: Color(0xFF86868B),
+                              color: Color(0xFF94A3B8),
                               size: 18,
                             ),
                             onPressed: () {
@@ -201,9 +205,9 @@ class _HomeScreenState extends State<HomeScreen> {
                   ),
                 ),
               ),
-              const SizedBox(height: 12),
+              const SizedBox(height: 14),
               SizedBox(
-                height: 36,
+                height: 38,
                 child: ListView.separated(
                   scrollDirection: Axis.horizontal,
                   itemCount: _categories.length,
@@ -220,22 +224,28 @@ class _HomeScreenState extends State<HomeScreen> {
                         _applyFilters();
                       },
                       child: Container(
-                        padding: const EdgeInsets.symmetric(horizontal: 14),
-                        alignment: Alignment.center,
+                        padding: const EdgeInsets.symmetric(
+                          horizontal: 16,
+                          vertical: 8,
+                        ),
                         decoration: BoxDecoration(
                           color: isSelected
-                              ? const Color(0xFF1D1D1F)
-                              : const Color(0xFFF5F5F7),
-                          borderRadius: BorderRadius.circular(18),
+                              ? const Color(0xFF2563EB)
+                              : const Color(0xFFF1F5F9),
+                          borderRadius: BorderRadius.circular(20),
                         ),
-                        child: Text(
-                          category,
-                          style: TextStyle(
-                            fontSize: 12,
-                            fontWeight: FontWeight.w600,
-                            color: isSelected
-                                ? Colors.white
-                                : const Color(0xFF1D1D1F),
+                        child: Center(
+                          child: Text(
+                            category,
+                            style: TextStyle(
+                              fontSize: 13,
+                              fontWeight: isSelected
+                                  ? FontWeight.w700
+                                  : FontWeight.w500,
+                              color: isSelected
+                                  ? Colors.white
+                                  : const Color(0xFF64748B),
+                            ),
                           ),
                         ),
                       ),
@@ -244,83 +254,99 @@ class _HomeScreenState extends State<HomeScreen> {
                 ),
               ),
               const SizedBox(height: 14),
+              ClipRRect(
+                borderRadius: BorderRadius.circular(16),
+                child: Image.asset(
+                  'assets/images/banner.png',
+                  height: 120,
+                  width: double.infinity,
+                  fit: BoxFit.cover,
+                  errorBuilder: (context, error, stackTrace) => Container(
+                    height: 120,
+                    color: const Color(0xFF2563EB),
+                    alignment: Alignment.center,
+                    child: const Text(
+                      'Teknoloji Fırsatları',
+                      style: TextStyle(
+                        color: Colors.white,
+                        fontSize: 16,
+                        fontWeight: FontWeight.w700,
+                      ),
+                    ),
+                  ),
+                ),
+              ),
+              const SizedBox(height: 14),
               Expanded(
                 child: _isLoading
-                    ? const Center(child: CircularProgressIndicator())
-                    : CustomScrollView(
-                        slivers: [
-                          SliverToBoxAdapter(
-                            child: Padding(
-                              padding: const EdgeInsets.only(bottom: 20),
-                              child: ClipRRect(
-                                borderRadius: BorderRadius.circular(16),
-                                child: Image.asset(
-                                  'assets/images/banner.png',
-                                  width: double.infinity,
-                                  fit: BoxFit.cover,
+                    ? const Center(
+                        child: CircularProgressIndicator(
+                          color: Color(0xFF2563EB),
+                        ),
+                      )
+                    : _filteredProducts.isEmpty
+                        ? Center(
+                            child: Column(
+                              mainAxisSize: MainAxisSize.min,
+                              children: [
+                                Icon(
+                                  Icons.search_off_rounded,
+                                  size: 48,
+                                  color: Colors.grey.withValues(alpha: 0.5),
                                 ),
-                              ),
-                            ),
-                          ),
-                          if (_filteredProducts.isEmpty)
-                            const SliverFillRemaining(
-                              hasScrollBody: false,
-                              child: Center(
-                                child: Text(
-                                  'No products found.',
+                                const SizedBox(height: 10),
+                                const Text(
+                                  'Aradığınız kriterlere uygun ürün bulunamadı.',
                                   style: TextStyle(
-                                    fontSize: 15,
-                                    color: Color(0xFF86868B),
+                                    fontSize: 14,
+                                    color: Color(0xFF64748B),
                                   ),
                                 ),
-                              ),
-                            )
-                          else
-                            SliverPadding(
-                              padding: const EdgeInsets.only(bottom: 24),
-                              sliver: SliverGrid(
-                                gridDelegate:
-                                    const SliverGridDelegateWithFixedCrossAxisCount(
-                                  crossAxisCount: 2,
-                                  crossAxisSpacing: 16,
-                                  mainAxisSpacing: 16,
-                                  childAspectRatio: 0.74,
-                                ),
-                                delegate: SliverChildBuilderDelegate(
-                                  (context, index) {
-                                    final product = _filteredProducts[index];
-                                    return ProductCard(
-                                      product: product,
-                                      isFavorite: widget.favoriteIds
-                                          .contains(product.id),
-                                      onFavoriteToggle: () {
-                                        widget.onToggleFavorite(product.id);
-                                        if (_selectedCategory == 'Favorites') {
-                                          _applyFilters();
-                                        }
-                                      },
-                                      onTap: () {
-                                        Navigator.pushNamed(
-                                          context,
-                                          '/detail',
-                                          arguments: product,
-                                        ).then((_) {
-                                          if (_selectedCategory ==
-                                              'Favorites') {
-                                            _applyFilters();
-                                          } else {
-                                            setState(() {});
-                                          }
-                                        });
-                                      },
-                                    );
-                                  },
-                                  childCount: _filteredProducts.length,
-                                ),
-                              ),
+                              ],
                             ),
-                        ],
-                      ),
+                          )
+                        : GridView.builder(
+                            itemCount: _filteredProducts.length,
+                            gridDelegate:
+                                const SliverGridDelegateWithFixedCrossAxisCount(
+                              crossAxisCount: 2,
+                              childAspectRatio: 0.72,
+                              crossAxisSpacing: 12,
+                              mainAxisSpacing: 12,
+                            ),
+                            itemBuilder: (context, index) {
+                              final product = _filteredProducts[index];
+                              return ProductCard(
+                                product: product,
+                                isFavorite:
+                                    widget.favoriteIds.contains(product.id),
+                                onTap: () {
+                                  Navigator.pushNamed(
+                                    context,
+                                    '/detail',
+                                    arguments: product,
+                                  ).then((_) {
+                                    setState(() {});
+                                  });
+                                },
+                                onFavoriteToggle: () {
+                                  widget.onToggleFavorite(product.id);
+                                  setState(() {});
+                                },
+                                onAddToCart: () {
+                                  widget.onAddToCart(product);
+                                  ScaffoldMessenger.of(context).clearSnackBars();
+                                  ScaffoldMessenger.of(context).showSnackBar(
+                                    SnackBar(
+                                      content: Text('${product.name} sepete eklendi'),
+                                      duration: const Duration(seconds: 1),
+                                      behavior: SnackBarBehavior.floating,
+                                    ),
+                                  );
+                                },
+                              );
+                            },
+                          ),
               ),
             ],
           ),

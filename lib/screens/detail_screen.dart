@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import '../models/product.dart';
 import '../widgets/spec_box.dart';
 
-class DetailScreen extends StatelessWidget {
+class DetailScreen extends StatefulWidget {
   final ValueChanged<Product> onAddToCart;
   final Set<int> favoriteIds;
   final ValueChanged<int> onToggleFavorite;
@@ -15,9 +15,16 @@ class DetailScreen extends StatelessWidget {
   });
 
   @override
+  State<DetailScreen> createState() => _DetailScreenState();
+}
+
+class _DetailScreenState extends State<DetailScreen> {
+  int _quantity = 1;
+
+  @override
   Widget build(BuildContext context) {
     final product = ModalRoute.of(context)!.settings.arguments as Product;
-    final isFavorite = favoriteIds.contains(product.id);
+    final isFavorite = widget.favoriteIds.contains(product.id);
 
     return Scaffold(
       backgroundColor: Colors.white,
@@ -35,24 +42,27 @@ class DetailScreen extends StatelessWidget {
                     icon: const Icon(
                       Icons.arrow_back_ios_new,
                       size: 16,
-                      color: Color(0xFF1D1D1F),
+                      color: Color(0xFF1E293B),
                     ),
                     label: const Text(
-                      'Back',
+                      'Geri',
                       style: TextStyle(
                         fontSize: 15,
                         fontWeight: FontWeight.w600,
-                        color: Color(0xFF1D1D1F),
+                        color: Color(0xFF1E293B),
                       ),
                     ),
                   ),
                   IconButton(
-                    onPressed: () => onToggleFavorite(product.id),
+                    onPressed: () {
+                      widget.onToggleFavorite(product.id);
+                      setState(() {});
+                    },
                     icon: Icon(
                       isFavorite ? Icons.favorite : Icons.favorite_border,
                       color: isFavorite
-                          ? const Color(0xFFFF3B30)
-                          : const Color(0xFF1D1D1F),
+                          ? const Color(0xFFEF4444)
+                          : const Color(0xFF1E293B),
                     ),
                   ),
                 ],
@@ -69,8 +79,12 @@ class DetailScreen extends StatelessWidget {
                       height: 280,
                       padding: const EdgeInsets.all(24),
                       decoration: BoxDecoration(
-                        color: const Color(0xFFF5F5F7),
+                        color: const Color(0xFFF8FAFC),
                         borderRadius: BorderRadius.circular(20),
+                        border: Border.all(
+                          color: const Color(0xFFF1F5F9),
+                          width: 1,
+                        ),
                       ),
                       child: Hero(
                         tag: 'product_image_${product.id}',
@@ -81,7 +95,7 @@ class DetailScreen extends StatelessWidget {
                               const Icon(
                             Icons.devices,
                             size: 64,
-                            color: Colors.grey,
+                            color: Color(0xFF94A3B8),
                           ),
                         ),
                       ),
@@ -92,7 +106,7 @@ class DetailScreen extends StatelessWidget {
                       style: const TextStyle(
                         fontSize: 26,
                         fontWeight: FontWeight.w800,
-                        color: Color(0xFF1D1D1F),
+                        color: Color(0xFF1E293B),
                         letterSpacing: -0.5,
                       ),
                     ),
@@ -101,16 +115,16 @@ class DetailScreen extends StatelessWidget {
                       product.tagline,
                       style: const TextStyle(
                         fontSize: 13,
-                        color: Color(0xFF86868B),
+                        color: Color(0xFF64748B),
                       ),
                     ),
                     const SizedBox(height: 20),
                     const Text(
-                      'Description',
+                      'Ürün Açıklaması',
                       style: TextStyle(
                         fontSize: 16,
                         fontWeight: FontWeight.w700,
-                        color: Color(0xFF1D1D1F),
+                        color: Color(0xFF1E293B),
                       ),
                     ),
                     const SizedBox(height: 8),
@@ -119,16 +133,16 @@ class DetailScreen extends StatelessWidget {
                       style: const TextStyle(
                         fontSize: 13,
                         height: 1.5,
-                        color: Color(0xFF515154),
+                        color: Color(0xFF475569),
                       ),
                     ),
                     const SizedBox(height: 22),
                     const Text(
-                      'Specifications',
+                      'Teknik Özellikler',
                       style: TextStyle(
                         fontSize: 16,
                         fontWeight: FontWeight.w700,
-                        color: Color(0xFF1D1D1F),
+                        color: Color(0xFF1E293B),
                       ),
                     ),
                     const SizedBox(height: 10),
@@ -144,6 +158,57 @@ class DetailScreen extends StatelessWidget {
                           ),
                         );
                       }).toList(),
+                    ),
+                    const SizedBox(height: 24),
+                    Row(
+                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                      children: [
+                        const Text(
+                          'Adet',
+                          style: TextStyle(
+                            fontSize: 15,
+                            fontWeight: FontWeight.w700,
+                            color: Color(0xFF1E293B),
+                          ),
+                        ),
+                        Container(
+                          decoration: BoxDecoration(
+                            color: const Color(0xFFF1F5F9),
+                            borderRadius: BorderRadius.circular(10),
+                          ),
+                          child: Row(
+                            children: [
+                              IconButton(
+                                visualDensity: VisualDensity.compact,
+                                onPressed: _quantity > 1
+                                    ? () => setState(() => _quantity--)
+                                    : null,
+                                icon: const Icon(Icons.remove, size: 18),
+                                color: const Color(0xFF1E293B),
+                              ),
+                              Padding(
+                                padding:
+                                    const EdgeInsets.symmetric(horizontal: 8),
+                                child: Text(
+                                  '$_quantity',
+                                  style: const TextStyle(
+                                    fontSize: 15,
+                                    fontWeight: FontWeight.w700,
+                                    color: Color(0xFF1E293B),
+                                  ),
+                                ),
+                              ),
+                              IconButton(
+                                visualDensity: VisualDensity.compact,
+                                onPressed: () =>
+                                    setState(() => _quantity++),
+                                icon: const Icon(Icons.add, size: 18),
+                                color: const Color(0xFF1E293B),
+                              ),
+                            ],
+                          ),
+                        ),
+                      ],
                     ),
                     const SizedBox(height: 28),
                   ],
@@ -167,10 +232,10 @@ class DetailScreen extends StatelessWidget {
                     mainAxisSize: MainAxisSize.min,
                     children: [
                       const Text(
-                        'Price',
+                        'Fiyat',
                         style: TextStyle(
                           fontSize: 12,
-                          color: Color(0xFF86868B),
+                          color: Color(0xFF64748B),
                         ),
                       ),
                       Text(
@@ -178,7 +243,7 @@ class DetailScreen extends StatelessWidget {
                         style: const TextStyle(
                           fontSize: 22,
                           fontWeight: FontWeight.w800,
-                          color: Color(0xFF1D1D1F),
+                          color: Color(0xFF2563EB),
                         ),
                       ),
                     ],
@@ -189,18 +254,24 @@ class DetailScreen extends StatelessWidget {
                       height: 50,
                       child: ElevatedButton(
                         onPressed: () {
-                          onAddToCart(product);
+                          for (int i = 0; i < _quantity; i++) {
+                            widget.onAddToCart(product);
+                          }
                           ScaffoldMessenger.of(context).clearSnackBars();
                           ScaffoldMessenger.of(context).showSnackBar(
                             SnackBar(
-                              content: Text('${product.name} added to cart'),
+                              content: Text(
+                                _quantity > 1
+                                    ? '$_quantity adet ${product.name} sepete eklendi'
+                                    : '${product.name} sepete eklendi',
+                              ),
                               duration: const Duration(seconds: 2),
                               behavior: SnackBarBehavior.floating,
                             ),
                           );
                         },
                         style: ElevatedButton.styleFrom(
-                          backgroundColor: const Color(0xFF1D1D1F),
+                          backgroundColor: const Color(0xFF2563EB),
                           foregroundColor: Colors.white,
                           shape: RoundedRectangleBorder(
                             borderRadius: BorderRadius.circular(14),
@@ -208,10 +279,10 @@ class DetailScreen extends StatelessWidget {
                           elevation: 0,
                         ),
                         child: const Text(
-                          'Add to Cart',
+                          'Sepete Ekle',
                           style: TextStyle(
                             fontSize: 15,
-                            fontWeight: FontWeight.w600,
+                            fontWeight: FontWeight.w700,
                           ),
                         ),
                       ),
